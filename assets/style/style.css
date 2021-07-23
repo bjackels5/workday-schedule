@@ -32,7 +32,7 @@ textarea {
 
 .row-wds { /* renamed from row to row-wds so that it won't interfere with the row class from bootstrap */
   white-space: pre-wrap;
-  height: 80px;
+  height: 70px; /* changed from 80px to 70px so that it will match the mock-up */
   border-top: 1px solid white;
 }
 
@@ -68,5 +68,5 @@ textarea {
 .saveBtn i:hover {
   font-size: 20px;
   transition: all .3s ease-in-out;
-  color: black;
 }
+  
