@@ -1,4 +1,4 @@
-// one event per hour
+// the events the user has typed in
 var descriptions = [];
 
 // change firsthour as needed for testing so that some appear in the past, some now, some future
@@ -98,6 +98,7 @@ var loadDescriptions = function()
 
     // if nothing in localStorage, set each description to an empty string
     if (!descriptions) {
+        descriptions = [];
         for (var i = 0; i < totalHours; i++)
         {
             // eventually change this to be an empty string
