@@ -21,6 +21,11 @@ textarea {
   border-bottom: 10px solid black;
 }
 
+/* add a bottom margin so that the last hour on the scheduler is not flush to the bottom of the window */
+.container {
+    margin-bottom: 50px;
+}
+
 .description{
   white-space: pre-wrap;
 }
@@ -32,7 +37,7 @@ textarea {
 
 .row-wds { /* renamed from row to row-wds so that it won't interfere with the row class from bootstrap */
   white-space: pre-wrap;
-  height: 70px; /* changed from 80px to 70px so that it will match the mock-up */
+  height: 70px; /* changed from 80px to 70px so that it will more closely match the mock-up */
   border-top: 1px solid white;
 }
 
@@ -69,4 +74,3 @@ textarea {
   font-size: 20px;
   transition: all .3s ease-in-out;
 }
-  

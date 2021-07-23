@@ -1,9 +1,10 @@
-const hours = [ "9AM", "10AM", "11AM", "12AM", "1PM", "2PM", "3PM", "4PM", "5PM" ];
 // fake data just to test with
-var descriptions = [ "zero", "one", "two", "three", "four", "five", "six", "seven", "eight" ];
-// change this as needed for testing so that some appear in the past, some now, some future
-// Don't forget to change it to 9 before final release!
+var descriptions = [];
+
+// change firsthour as needed for testing so that some appear in the past, some now, some future
+// Don't forget to change it to before final release!
 const firstHour = 7;
+const totalHours = 9;
 
 var auditHours = function()
 {
@@ -36,7 +37,7 @@ var renderHours = function()
     var now = moment();
     var theHour = now.clone();
 
-    for (var i = 0; i < hours.length; i++)
+    for (var i = 0; i < totalHours; i++)
     {
         theHour.hour(firstHour + i);
         var timeBlockEl = $("<div>").addClass("time-block");
@@ -65,4 +66,84 @@ var renderHours = function()
     auditHours();
 };
 
+// called when the user click's on a description
+$(".container").on("click", ".description", function() { 
+    var descParEl = $(this).find("p");
+    console.log(descParEl);
+    console.log(descParEl.text());
+
+    var text =$(this).text().trim();
+    var index = $(this)
+            .closest(".time-block")
+            .index();
+    
+    var textareaID = "textarea" + index;
+
+    var textInput = $("<textarea>")
+        .addClass("form-control")
+        .addClass("description")
+        .addClass(textareaID)
+        .val(text);
+        
+    descParEl.replaceWith(textInput); 
+    textInput.trigger("focus");   
+});
+
+var saveDescriptions = function()
+{
+    localStorage.setItem("workdayDescriptions", JSON.stringify(descriptions));
+};
+
+var loadDescriptions = function()
+{
+    descriptions = JSON.parse(localStorage.getItem("workdayDescriptions"));
+
+    // if nothing in localStorage, set each description to an empty string
+    if (!descriptions) {
+        for (var i = 0; i < totalHours; i++)
+        {
+            // eventually change this to be an empty string
+            descriptions.push("Hour " + i);
+        }
+    }
+};
+
+// called when the icon (is it a lock? Is it a floppy disk?) to the right of the hour is clicked
+$(".container").on("click", ".saveBtn", function() {
+    var index = $(this)
+            .closest(".time-block")
+            .index();
+
+    console.log("save button clicked at index: ", index);
+
+    var textareaID = ".textarea" + index;
+
+    var theTextArea = $(textareaID);
+    
+    // if the user clicks a save button for an hour that they had not tried to edit,
+    // there will not be a text area for that hour, so do nothing
+    if (theTextArea.length)
+    {
+        console.log("the textarea:", theTextArea);
+        console.log("the text in the textarea:", theTextArea.val());
+
+        // get the textarea's current value/text
+        var text = theTextArea.val().trim();
+
+        // save the value to the hour's description
+        descriptions[index] = text;
+
+        // save to localStorage
+        saveDescriptions();
+
+        // recreate p element
+        var descParEl = $("<p>")
+                    .text(text);
+
+        // replace textarea with p element
+        theTextArea.replaceWith(descParEl);
+    }
+});
+
+loadDescriptions();
 renderHours();
