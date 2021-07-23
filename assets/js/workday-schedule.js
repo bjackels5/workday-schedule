@@ -1,9 +1,9 @@
 // the events the user has typed in
-var descriptions = [];
+var events = [];
 
 // change firsthour as needed for testing so that some appear in the past, some now, some future
 // Don't forget to change it to before final release!
-const firstHour = 7;
+const firstHour = 15;
 const totalHours = 9;
 
 var auditHours = function()
@@ -48,7 +48,7 @@ var renderHours = function()
         hourEl.append(hourParEl);
 
         var descEl = $("<div>").addClass("description col-10 text-left text-dark py-1"); 
-        var descParEl = $("<p>").text(descriptions[i]);
+        var descParEl = $("<p>").text(events[i]);
         descEl.append(descParEl);
 
         var saveBtnEl = $("<div>").addClass("saveBtn col-1 py-4");
@@ -87,22 +87,23 @@ $(".container").on("click", ".description", function() {
     textInput.trigger("focus");   
 });
 
-var saveDescriptions = function()
+var saveEvents = function()
 {
-    localStorage.setItem("workdayDescriptions", JSON.stringify(descriptions));
+    localStorage.setItem("workdayEvents", JSON.stringify(events));
 };
 
-var loadDescriptions = function()
+var loadEvents = function()
 {
-    descriptions = JSON.parse(localStorage.getItem("workdayDescriptions"));
+    events = JSON.parse(localStorage.getItem("workdayEvents"));
 
     // if nothing in localStorage, set each description to an empty string
-    if (!descriptions) {
-        descriptions = [];
+    if (!events)
+    {
+        events = [];
         for (var i = 0; i < totalHours; i++)
         {
             // eventually change this to be an empty string
-            descriptions.push("Hour " + i);
+            events.push("Hour " + i);
         }
     }
 };
@@ -130,10 +131,10 @@ $(".container").on("click", ".saveBtn", function() {
         var text = theTextArea.val().trim();
 
         // save the value to the hour's description
-        descriptions[index] = text;
+        events[index] = text;
 
         // save to localStorage
-        saveDescriptions();
+        saveEvents();
 
         // recreate p element
         var descParEl = $("<p>")
@@ -150,5 +151,5 @@ var loadTodaysDate = function()
 }
 
 loadTodaysDate();
-loadDescriptions();
+loadEvents();
 renderHours();
