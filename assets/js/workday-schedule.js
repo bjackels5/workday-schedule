@@ -1,4 +1,4 @@
-// fake data just to test with
+// one event per hour
 var descriptions = [];
 
 // change firsthour as needed for testing so that some appear in the past, some now, some future
@@ -52,9 +52,7 @@ var renderHours = function()
         descEl.append(descParEl);
 
         var saveBtnEl = $("<div>").addClass("saveBtn col-1 py-4");
-        // the mock up looks like it's either fa-lock-keyhole or fa-floppy-disk, but neither of those
-        // are in the FontAwesome css file that was linked the code that was given to us.
-        var iconEl = $("<i>").addClass("fa fa-solid fa-lock");
+        var iconEl = $("<i>").addClass("fa fa-save");
         saveBtnEl.append(iconEl);
 
         timeRowEl.append(hourEl, descEl, saveBtnEl);
@@ -108,7 +106,7 @@ var loadDescriptions = function()
     }
 };
 
-// called when the icon (is it a lock? Is it a floppy disk?) to the right of the hour is clicked
+// called when the icon (is it a padlock? Is it a floppy disk?) to the right of the hour is clicked
 $(".container").on("click", ".saveBtn", function() {
     var index = $(this)
             .closest(".time-block")
@@ -145,5 +143,11 @@ $(".container").on("click", ".saveBtn", function() {
     }
 });
 
+var loadTodaysDate = function()
+{
+    $("#currentDay").text(moment().format("dddd, MMMM Do"));
+}
+
+loadTodaysDate();
 loadDescriptions();
 renderHours();
