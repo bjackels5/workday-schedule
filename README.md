@@ -29,7 +29,6 @@ This fifth challenge for the Coding Bootcamp is to use modify an existing framew
 ---
 <a id="requirementMockup"></a>
 ## Requirement Mockup
-<a id="webImage"></a>
 
 ![Requirement Mockup](./assets/images/mockup.gif)
 
