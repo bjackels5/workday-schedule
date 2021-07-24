@@ -1,9 +1,11 @@
+// Module 4 - Workday Schedule - workday-schedule.js this file was started from scratch - Brenda Jackels
+
 // the events the user has typed in
 var events = [];
 
 // change firsthour as needed for testing so that some appear in the past, some now, some future
 // Don't forget to change it to before final release!
-const firstHour = 15;
+const firstHour = 9;
 const totalHours = 9;
 
 var timeInterval;
@@ -67,10 +69,18 @@ var renderHours = function()
 };
 
 // called when the user click's on a description
-$(".container").on("click", ".description", function() { 
+$(".container").on("click", ".description", function() {
+    
+    /*
+        Neither the mockup nor the assigment description shows what happens if the user edits a second 
+        event without saving the first event. Given that each hour has it's own save button, it seems clear
+        that the an event should not be saved unless the save button for that hour is clicked. This could
+        lead to multiple events being edited, but not saved. The mockup does not show any feedback to the user
+        that they have unsaved events. I changed how an edited-but-not-yet-saved event looks so the user
+        knows which events still need saving.
+    */
+
     var descParEl = $(this).find("p");
-    console.log(descParEl);
-    console.log(descParEl.text());
 
     var text =$(this).text().trim();
     var index = $(this)
@@ -104,19 +114,17 @@ var loadEvents = function()
         events = [];
         for (var i = 0; i < totalHours; i++)
         {
-            // eventually change this to be an empty string
-            events.push("Hour " + i);
+            // each event starts out empty
+            events.push("");
         }
     }
 };
 
-// called when the icon (is it a padlock? Is it a floppy disk?) to the right of the hour is clicked
+// called when the icon to the right of the hour is clicked
 $(".container").on("click", ".saveBtn", function() {
     var index = $(this)
             .closest(".time-block")
             .index();
-
-    console.log("save button clicked at index: ", index);
 
     var textareaID = ".textarea" + index;
 
@@ -126,9 +134,6 @@ $(".container").on("click", ".saveBtn", function() {
     // there will not be a text area for that hour, so do nothing
     if (theTextArea.length)
     {
-        console.log("the textarea:", theTextArea);
-        console.log("the text in the textarea:", theTextArea.val());
-
         // get the textarea's current value/text
         var text = theTextArea.val().trim();
 
@@ -155,22 +160,23 @@ function customMinuteRefresh(numMinutes)
         numMinutes = 60;
     }
     now = moment();
+
+    // need to subtract 1 because now.minutes() will return 15 (for example) when 'now' is 15 minutes 32 seconds, but 
+    // if it's 15 minutes 32 seconds, we want the refresh to be in 44 minutes 28 seconds, not 45 minutes 28 seconds.
     var minutesToNextRefresh = numMinutes - now.minutes() % numMinutes - 1;
     var secondsToNextRefresh = 60 - now.seconds() + minutesToNextRefresh * 60;
     var mSecondsToNextRefresh = secondsToNextRefresh * 1000;
     timeInterval = setInterval(function()
     {
-        console.log("customMinuteRefresh: refreshing past/present/future. minutesToNextRefresh: ", minutesToNextRefresh);
         auditHours();
         if (mSecondsToNextRefresh != numMinutes * 60 * 1000)
         {
-            // if the first timer was less than numMinutes minutes
+            // if the first timer was less than the full timer amount
             clearInterval(timeInterval);
             customMinuteRefresh(numMinutes); // this should now set the timer for numMinutes
         }
     }, mSecondsToNextRefresh);
 }
-
 
 function hourlyRefresh()
 {
@@ -179,6 +185,8 @@ function hourlyRefresh()
     // The user isn't likely to be started up the app right at the top of the hour, so the first timer
     // will likely need to be less than an hour. We don't want to just wait an hour from now because, for example, 
     // if the user starts the app at 10:15, we want the past/present/future indicators to refresh at 11:00, not 11:15.
+
+    // generalized this functionality so that I can test without having to wait a full hour
 
     customMinuteRefresh(60);
 }

@@ -28,6 +28,14 @@ Further down in the assignment description, under Technical Acceptance Criteria,
 # Mockup issues:
 * In the mock up it looks like the icon to the right of each hour is either fa-lock-keyhole or fa-floppy-disk, but neither of those are in the FontAwesome css file that was linked the code that was given to us. eta: Thanks to classmate Caroline Luce, I now know the name of the icon is 'save' (fa-save). 
 * In the mockup, it shows the icon changing from white to black when it's clicked/hovered. I got the impression that we aren't supposed to need to edit the css file, but the icon does not change to black when the mouse is clicked or when the user hovers over the icon.
-* What should happen if the user enters an event for 10 am but then clicks the save icon for 9am? I made it so that when a user clicks on an event, it changes to a form-control (bootstrap). They can end up with a form-control for each hour of the day. This gives the user visual feedback that they have not saved their changes. Clicking on a save icon will save only the event that corresponds with that icon
+*     /*
+        Neither the mockup nor the assigment description shows what happens if the user edits a second 
+        event without saving the first event. Given that each hour has it's own save button, it seems clear
+        that the an event should not be saved unless the save button for that hour is clicked. This could
+        lead to multiple events being edited, but not saved. The mockup does not show any feedback to the user
+        that they have unsaved events. I changed how an edited-but-not-yet-saved event looks so the user
+        knows which events still need saving.
+    */
+What should happen if the user enters an event for 10 am but then clicks the save icon for 9am? I made it so that when a user clicks on an event, it changes to a form-control (bootstrap). They can end up with a form-control for each hour of the day. This gives the user visual feedback that they have not saved their changes. Clicking on a save icon will save only the event that corresponds with that icon
 * It looks like this scheduler is only for one day - there's no way shown in the 
 mockup to switch to a different day. So... when I open the scheduler, it displays today's date. I can enter a bunch of events for today, and those are saved to localStorage. But... when I open the app tomorrow, it's going to show the events from today? or does it start fresh? 
