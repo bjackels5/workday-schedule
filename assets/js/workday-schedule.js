@@ -1,4 +1,4 @@
-// Module 4 - Workday Schedule - workday-schedule.js this file was started from scratch - Brenda Jackels
+// Module 5 - Workday Schedule - workday-schedule.js this file was started from scratch - Brenda Jackels
 
 // the events the user has typed in
 var events = [];
