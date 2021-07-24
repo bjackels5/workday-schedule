@@ -6,6 +6,8 @@ var events = [];
 const firstHour = 15;
 const totalHours = 9;
 
+var timeInterval;
+
 var auditHours = function()
 {
     var now = moment().hour();
@@ -145,6 +147,75 @@ $(".container").on("click", ".saveBtn", function() {
     }
 });
 
+function customMinuteRefresh(numMinutes)
+{
+    if (numMinutes === 0)
+    {
+        numMinutes = 60;
+    }
+    now = moment();
+    var minutesToNextRefresh = numMinutes - now.minutes() % numMinutes - 1;
+    var secondsToNextRefresh = 60 - now.seconds() + minutesToNextRefresh * 60;
+    var mSecondsToNextRefresh = secondsToNextRefresh * 1000;
+    timeInterval = setInterval(function()
+    {
+        console.log("customMinuteRefresh: refreshing past/present/future. minutesToNextRefresh: ", minutesToNextRefresh);
+        auditHours();
+        if (mSecondsToNextRefresh != numMinutes * 60 * 1000)
+        {
+            // if the first timer was less numMinutes minutes
+            clearInterval(timeInterval);
+            customMinuteRefresh(numMinutes); // this should now set the timer for numMinutes
+        }
+    }, mSecondsToNextRefresh);
+}
+
+
+function hourlyRefresh()
+{
+    // At the top of every hour, refresh the events to reflect past/present/future
+
+    // The user isn't likely to be started up the app right at the top of the hour, so the first timer
+    // will likely need to be less than an hour. We don't want to just wait an hour from now because, for example, 
+    // if the user starts the app at 10:15, we want the past/present/future indicators to refresh at 11:00, not 11:15.
+
+    customMinuteRefresh(60);
+    /*
+    var minutesToNextRefresh = 60 - moment().minutes();
+    var secondsToNextRefresh = 60 - moment().seconds() + minutesToNextRefresh * 60;
+    var mSecondsToNextRefresh = secondsToNextRefresh * 1000;
+
+    timeInterval = setInterval(function()
+    {
+        console.log("hourRefresh: refreshing past/present/future. minutesToNextRefresh: ", minutesToNextRefresh);
+        auditHours();
+        if (mSecondsToNextRefresh != 60 * 60 * 1000) // if the first timer was less than a fjll hour
+        {
+            clearInterval(timeInterval);
+            hourlyRefresh(); // this should now set the timer for 60 minutes
+        }
+    }, mSecondsToNextRefresh);
+    */
+}
+
+function fiveMinuteRefresh()
+{
+    var minutesToNextRefresh = 5 - moment().minutes() % 5;
+    var secondsToNextRefresh = 60 - moment().seconds() + minutesToNextRefresh * 60;
+    var mSecondsToNextRefresh = secondsToNextRefresh * 1000;
+    timeInterval = setInterval(function()
+    {
+        console.log("fiveMinuteRefresh: refreshing past/present/future. minutesToNextRefresh: ", minutesToNextRefresh);
+        auditHours();
+        if (mSecondsToNextRefresh != 5 * 60 * 1000)
+        {
+            // if the first timer was less 5 minutes
+            clearInterval(timeInterval);
+            fiveMinuteRefresh(); // this should now set the timer for 5 minutes
+        }
+    }, mSecondsToNextRefresh);
+}
+
 var loadTodaysDate = function()
 {
     $("#currentDay").text(moment().format("dddd, MMMM Do"));
@@ -153,3 +224,4 @@ var loadTodaysDate = function()
 loadTodaysDate();
 loadEvents();
 renderHours();
+hourlyRefresh();
