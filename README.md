@@ -66,7 +66,7 @@ Further down in the assignment description, under Technical Acceptance Criteria,
 
 ## Workday Scheduler URL
 <a id="projectURL"></a>
-[Workday Scheduler URL](https://bjackels5.github.io/workday-scheduler/)
+[Workday Scheduler URL](https://bjackels5.github.io/workday-schedule/)
 
 ---
 
